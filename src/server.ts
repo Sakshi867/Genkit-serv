@@ -20,4 +20,5 @@ app.post("/categorize", async (req: Request, res: Response): Promise<void> => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(🚀 Genkit server running on port ${PORT}));
+app.listen(PORT, () => { console.log(`🚀 Genkit server running on port ${PORT}`);
+                       });
