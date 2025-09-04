@@ -30,15 +30,10 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
     });
   }
 
-  const response = await ai.generate({
-    model: "googleai/gemini-2.5-flash",
-    contents: [
-      {
-        role: "user",
-        parts
-      }
-    ]
-  });
+const response = await ai.generateText({
+  model: "googleai/gemini-2.5-flash",
+  text: parts.map(p => (p.text ? p.text : "")).join("\n")
+});
 
   return {
     result: response.outputText
