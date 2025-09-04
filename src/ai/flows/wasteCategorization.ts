@@ -15,7 +15,7 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
   const parts: any[] = [];
 
   if (input.description) {
-    parts.push({ text: Description: ${input.description} });
+    parts.push({ text: `Description: ${input.description}` });
   }
 
   if (input.photoDataUri) {
