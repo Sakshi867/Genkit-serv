@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node Server.js",
     "dev": "ts-node-dev Server.ts"
+    "build":"tsc",
+    "render-build":"npm run build"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
