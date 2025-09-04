@@ -31,10 +31,8 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
             },
             {
               type: "media",
-              media: {
-                data: cleanBase64,
-                mimeType: "image/jpeg", // or "image/png"
-              }
+              data: cleanBase64,
+              mimeType: "image/jpeg" // or "image/png"
             }
           ]
         }
