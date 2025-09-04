@@ -18,26 +18,23 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
     // Clean Base64 (remove prefix like data:image/jpeg;base64,)
     const cleanBase64 = input.photoDataUri.replace(/^data:image\/\w+;base64,/, "");
 
-    const response = await ai.generate({
-      model: "googleai/gemini-2.5-flash",
-      output: { schema: CategorizeWasteOutputSchema },
-      messages: [
+const response = await ai.generate({
+  model: "googleai/gemini-2.5-flash",
+  output: { schema: CategorizeWasteOutputSchema },
+  messages: [
+    {
+      role: "user",
+      content: [
         {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: `Description: ${input.description}. Identify waste category and how it can be reused.`
-            },
-            {
-              type: "media",
-              data: cleanBase64,
-              mimeType: "image/jpeg" // or "image/png"
-            }
-          ]
+          type: "text",
+          text: `Description: ${input.description}. 
+                 Image (Base64): ${input.photoDataUri}.
+                 Identify waste category and how it can be reused.`
         }
       ]
-    });
+    }
+  ]
+});
 
     return response.output;
 
