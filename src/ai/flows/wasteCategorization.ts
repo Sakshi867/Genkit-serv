@@ -2,8 +2,8 @@ import { ai } from "../genkit";
 import { z } from "genkit";
 
 const CategorizeWasteInputSchema = z.object({
-  photoDataUri: z.string().describe("Image of waste as a Base64 data URI"),
-  description: z.string().describe("Short description of the waste"),
+  photoDataUri: z.string().optional().describe("Image of waste as a Base64 data URI"),
+  description: z.string().optional().describe("Short description of the waste"),
 });
 
 const CategorizeWasteOutputSchema = z.object({
@@ -12,19 +12,35 @@ const CategorizeWasteOutputSchema = z.object({
 });
 
 export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInputSchema>) {
-  const prompt = ai.definePrompt({
-    name: "categorizeWastePrompt",
-    input: { schema: CategorizeWasteInputSchema },
-    output: { schema: CategorizeWasteOutputSchema },
-    prompt: `You are an expert in agricultural waste categorization.
+  const parts: any[] = [];
 
-Description: {{{description}}}
-Photo: {{media url=photoDataUri}}
+  if (input.description) {
+    parts.push({ text: Description: ${input.description} });
+  }
 
-Identify the waste category and describe its suitability.`,
+  if (input.photoDataUri) {
+    // Remove Base64 prefix if present
+    const base64Data = input.photoDataUri.split(",")[1] || input.photoDataUri;
+
+    parts.push({
+      inlineData: {
+        mimeType: "image/jpeg", // Hardcode JPEG or detect dynamically
+        data: base64Data
+      }
+    });
+  }
+
+  const response = await ai.generate({
+    model: "googleai/gemini-2.5-flash",
+    contents: [
+      {
+        role: "user",
+        parts
+      }
+    ]
   });
 
-  const { output } = await prompt(input);
-  return output!;
+  return {
+    result: response.outputText
+  };
 }
- 
