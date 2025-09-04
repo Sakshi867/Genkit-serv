@@ -25,11 +25,15 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
         {
           role: "user",
           content: [
-            { text: Description: ${input.description}. Identify waste category and how it can be reused. },
             {
+              type: "text",
+              text: Description: ${input.description}. Identify waste category and how it can be reused.
+            },
+            {
+              type: "media",
               media: {
                 data: cleanBase64,
-                mimeType: "image/jpeg" // or "image/png" based on input
+                mimeType: "image/jpeg", // or "image/png"
               }
             }
           ]
