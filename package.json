@@ -4,7 +4,7 @@
   "main": "Server.js",
   "license": "MIT",
   "scripts": {
-    "start": "node Server.js",
+    "start": "node dist/server.js",
     "dev": "ts-node-dev Server.ts",
     "build":"tsc",
     "render-build":"npm run build"
