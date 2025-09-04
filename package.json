@@ -1,7 +1,7 @@
 {
   "name": "genkit-service",
   "version": "1.0.0",
-  "main": "Server.js",
+  "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
     "start": "node dist/server.js",
