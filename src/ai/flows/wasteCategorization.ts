@@ -27,7 +27,7 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
           content: [
             {
               type: "text",
-              text: Description: ${input.description}. Identify waste category and how it can be reused.
+              text: `Description: ${input.description}. Identify waste category and how it can be reused.`
             },
             {
               type: "media",
