@@ -15,28 +15,24 @@ const CategorizeWasteOutputSchema = z.object({
 
 export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInputSchema>) {
   try {
-    // Clean Base64
+    // Clean Base64 (remove prefix like data:image/jpeg;base64,)
     const cleanBase64 = input.photoDataUri.replace(/^data:image\/\w+;base64,/, "");
 
-    // Correct ai.generate usage
     const response = await ai.generate({
       model: "googleai/gemini-2.5-flash",
       output: { schema: CategorizeWasteOutputSchema },
       messages: [
         {
-          role: "system",
-          content: "You are an expert in agricultural waste categorization."
-        },
-        {
           role: "user",
-          content: `
-Description: ${input.description}
-The user has provided an image of the waste in Base64 format.
-
-Identify:
-1. Waste category
-2. How this waste can be reused (suitability).
-          `
+          content: [
+            { text: Description: ${input.description}. Identify waste category and how it can be reused. },
+            {
+              media: {
+                data: cleanBase64,
+                mimeType: "image/jpeg" // or "image/png" based on input
+              }
+            }
+          ]
         }
       ]
     });
