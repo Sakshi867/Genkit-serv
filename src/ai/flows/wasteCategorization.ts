@@ -20,12 +20,12 @@ export async function categorizeWaste(input: z.infer<typeof CategorizeWasteInput
 
   if (input.photoDataUri) {
     // Remove Base64 prefix if present
-    const base64Data = input.photoDataUri.split(",")[1] || input.photoDataUri;
+    const base64Data = input.photoDataUri.includes(",") ? input.photoDataUri.split(",")[1] : input.photoDataUri;
 
     parts.push({
       inlineData: {
         mimeType: "image/jpeg", // Hardcode JPEG or detect dynamically
-        data: base64Data
+        data: base64Data.trim()
       }
     });
   }
