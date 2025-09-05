@@ -1,12 +1,20 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import cors from "cors";   // ✅ add cors
 import { categorizeWaste } from "./ai/flows/wasteCategorization";
 
 dotenv.config();
 
 const app = express();
 app.use(bodyParser.json({ limit: "10mb" }));
+
+// ✅ enable CORS for all requests
+app.use(cors({
+  origin: "*", // allow all origins for now
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 // API route
 app.post("/categorize", async (req: Request, res: Response): Promise<void> => {
@@ -20,5 +28,6 @@ app.post("/categorize", async (req: Request, res: Response): Promise<void> => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => { console.log(`🚀 Genkit server running on port ${PORT}`);
-                       });
+app.listen(PORT, () => { 
+  console.log(`🚀 Genkit server running on port ${PORT}`);
+});
